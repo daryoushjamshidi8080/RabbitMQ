@@ -1,8 +1,15 @@
 import pika
 
-credentials = pika.PlainCredentials('daryoush', 'daryoush')
+credentials = pika.PlainCredentials('root', 'root')
+
+
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+    pika.ConnectionParameters(
+        host='localhost',
+        port=5672,
+        virtual_host='/myapp',
+        credentials=credentials
+    ))
 ch = connection.channel()
 ch.queue_declare(queue='one')
 
