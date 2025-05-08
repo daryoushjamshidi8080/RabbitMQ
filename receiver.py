@@ -16,8 +16,9 @@ ch.queue_declare(queue='one')
 
 def callback(ch, method, properties, body):
     print(f'Receinved  : {body}')
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-ch.basic_consume(queue='one', on_message_callback=callback, auto_ack=True)
+ch.basic_consume(queue='one', on_message_callback=callback)
 print('Waiting for message, to exit press ctrl+c')
 ch.start_consuming()
