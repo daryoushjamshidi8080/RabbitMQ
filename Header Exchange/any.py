@@ -3,7 +3,15 @@ from pika.exchange_type import ExchangeType
 
 
 credentials = pika.PlainCredentials('root', 'root')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='local'))
+
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        host='localhost',
+        port=5672,
+        virtual_host='/myapp',
+        credentials=credentials
+    )
+)
 ch = connection.channel()
 
 
@@ -12,6 +20,8 @@ ch.queue_declare('hq-any')
 
 
 bind_args = {'x-match': 'any', 'name': 'daryoush', 'age': '24'}
+
+print('Waiting message')
 
 
 def callback(ch, method, properties, body):

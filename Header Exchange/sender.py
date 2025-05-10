@@ -1,9 +1,16 @@
 import pika
 from pika.exchange_type import ExchangeType
 
-
 credentials = pika.PlainCredentials('root', 'root')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='local'))
+
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        host='localhost',
+        port=5672,
+        virtual_host='/myapp',
+        credentials=credentials
+    )
+)
 ch = connection.channel()
 
 
