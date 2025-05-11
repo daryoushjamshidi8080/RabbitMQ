@@ -1,7 +1,6 @@
 import pika
-import uuid
 
-
+# Remote Procedure Call
 credentials = pika.PlainCredentials('root', 'root')
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(
@@ -17,8 +16,15 @@ ch = connection.channel()
 def on_request_message_receive(ch, method, properties, body):
     print(
         f'Received request: {body} ------ correlation id : {properties.correlation_id}')
-    ch.basic_publish(exchange='', routing_key=properties.reply_to,
-                     body=f'Reply to {properties.correlation_id}')
+
+    ch.basic_publish(
+        exchange='',
+        routing_key=properties.reply_to,
+        properties=pika.BasicProperties(
+            correlation_id=properties.correlation_id
+        ),
+        body=f'Reply to {properties.correlation_id}'
+    )
 
 
 print('Staring Server')
