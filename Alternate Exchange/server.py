@@ -27,7 +27,7 @@ ch.queue_bind(queue='mainq', exchange='main', routing_key='home')
 
 
 def alt_callback(ch, method, properties, body):
-    with open('altExchg.logs', 'a') as file:
+    with open('altExchg.log', 'a') as file:
         file.write(f'time: {datetime.now()}  Alt: {body.decode()}\n')
 
 
